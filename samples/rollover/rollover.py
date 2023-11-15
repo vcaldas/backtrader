@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-# Copyright (C) 2015-2020 Daniel Rodriguez
+# Copyright (C) 2015-2023 Daniel Rodriguez
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,9 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import argparse
 import bisect
@@ -32,25 +30,36 @@ import backtrader as bt
 
 class TheStrategy(bt.Strategy):
     def start(self):
-        header = ['Len', 'Name', 'RollName', 'Datetime', 'WeekDay', 'Open',
-                  'High', 'Low', 'Close', 'Volume', 'OpenInterest']
-        print(', '.join(header))
+        header = [
+            "Len",
+            "Name",
+            "RollName",
+            "Datetime",
+            "WeekDay",
+            "Open",
+            "High",
+            "Low",
+            "Close",
+            "Volume",
+            "OpenInterest",
+        ]
+        print(", ".join(header))
 
     def next(self):
         txt = list()
-        txt.append('%04d' % len(self.data0))
-        txt.append('{}'.format(self.data0._dataname))
+        txt.append("%04d" % len(self.data0))
+        txt.append("{}".format(self.data0._dataname))
         # Internal knowledge ... current expiration in use is in _d
-        txt.append('{}'.format(self.data0._d._dataname))
-        txt.append('{}'.format(self.data.datetime.date()))
-        txt.append('{}'.format(self.data.datetime.date().strftime('%a')))
-        txt.append('{}'.format(self.data.open[0]))
-        txt.append('{}'.format(self.data.high[0]))
-        txt.append('{}'.format(self.data.low[0]))
-        txt.append('{}'.format(self.data.close[0]))
-        txt.append('{}'.format(self.data.volume[0]))
-        txt.append('{}'.format(self.data.openinterest[0]))
-        print(', '.join(txt))
+        txt.append("{}".format(self.data0._d._dataname))
+        txt.append("{}".format(self.data.datetime.date()))
+        txt.append("{}".format(self.data.datetime.date().strftime("%a")))
+        txt.append("{}".format(self.data.open[0]))
+        txt.append("{}".format(self.data.high[0]))
+        txt.append("{}".format(self.data.low[0]))
+        txt.append("{}".format(self.data.close[0]))
+        txt.append("{}".format(self.data.volume[0]))
+        txt.append("{}".format(self.data.openinterest[0]))
+        print(", ".join(txt))
 
 
 def checkdate(dt, d):
@@ -68,7 +77,7 @@ def checkdate(dt, d):
 
     YCode = int(d._dataname[-1])
     Y = decade + YCode
-    if Y < dt.year:  # Example: year 2019 ... YCode is 0 for 2020
+    if Y < dt.year:  # Example: year 2019 ... YCode is 0 for 2023
         Y += 10
 
     exp_day = 21 - (calendar.weekday(Y, M, 1) + 2) % 7
@@ -94,64 +103,83 @@ def runstrat(args=None):
 
     cerebro = bt.Cerebro()
 
-    fcodes = ['199FESXM4', '199FESXU4', '199FESXZ4', '199FESXH5', '199FESXM5']
+    fcodes = ["199FESXM4", "199FESXU4", "199FESXZ4", "199FESXH5", "199FESXM5"]
     store = bt.stores.VChartFile()
     ffeeds = [store.getdata(dataname=x) for x in fcodes]
 
     rollkwargs = dict()
     if args.checkdate:
-        rollkwargs['checkdate'] = checkdate
+        rollkwargs["checkdate"] = checkdate
 
         if args.checkcondition:
-            rollkwargs['checkcondition'] = checkvolume
+            rollkwargs["checkcondition"] = checkvolume
 
     if not args.no_cerebro:
         if args.rollover:
-            cerebro.rolloverdata(name='FESX', *ffeeds, **rollkwargs)
+            cerebro.rolloverdata(name="FESX", *ffeeds, **rollkwargs)
         else:
-            cerebro.chaindata(name='FESX', *ffeeds)
+            cerebro.chaindata(name="FESX", *ffeeds)
     else:
-        drollover = bt.feeds.RollOver(*ffeeds, dataname='FESX', **rollkwargs)
+        drollover = bt.feeds.RollOver(*ffeeds, dataname="FESX", **rollkwargs)
         cerebro.adddata(drollover)
 
     cerebro.addstrategy(TheStrategy)
     cerebro.run(stdstats=False)
 
     if args.plot:
-        pkwargs = dict(style='bar')
+        pkwargs = dict(style="bar")
         if args.plot is not True:  # evals to True but is not True
-            npkwargs = eval('dict(' + args.plot + ')')  # args were passed
+            npkwargs = eval("dict(" + args.plot + ")")  # args were passed
             pkwargs.update(npkwargs)
 
         cerebro.plot(**pkwargs)
 
 
 def parse_args(pargs=None):
-
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description='Sample for Roll Over of Futures')
+        description="Sample for Roll Over of Futures",
+    )
 
-    parser.add_argument('--no-cerebro', required=False, action='store_true',
-                        help='Use RollOver Directly')
+    parser.add_argument(
+        "--no-cerebro",
+        required=False,
+        action="store_true",
+        help="Use RollOver Directly",
+    )
 
-    parser.add_argument('--rollover', required=False, action='store_true')
+    parser.add_argument("--rollover", required=False, action="store_true")
 
-    parser.add_argument('--checkdate', required=False, action='store_true',
-                        help='Change during expiration week')
+    parser.add_argument(
+        "--checkdate",
+        required=False,
+        action="store_true",
+        help="Change during expiration week",
+    )
 
-    parser.add_argument('--checkcondition', required=False,
-                        action='store_true',
-                        help='Change when a given condition is met')
+    parser.add_argument(
+        "--checkcondition",
+        required=False,
+        action="store_true",
+        help="Change when a given condition is met",
+    )
 
     # Plot options
-    parser.add_argument('--plot', '-p', nargs='?', required=False,
-                        metavar='kwargs', const=True,
-                        help=('Plot the read data applying any kwargs passed\n'
-                              '\n'
-                              'For example:\n'
-                              '\n'
-                              '  --plot style="candle" (to plot candles)\n'))
+    parser.add_argument(
+        "--plot",
+        "-p",
+        nargs="?",
+        required=False,
+        metavar="kwargs",
+        const=True,
+        help=(
+            "Plot the read data applying any kwargs passed\n"
+            "\n"
+            "For example:\n"
+            "\n"
+            '  --plot style="candle" (to plot candles)\n'
+        ),
+    )
 
     if pargs is not None:
         return parser.parse_args(pargs)
@@ -159,5 +187,5 @@ def parse_args(pargs=None):
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     runstrat()

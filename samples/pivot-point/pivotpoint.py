@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-# Copyright (C) 2015-2020 Daniel Rodriguez
+# Copyright (C) 2015-2023 Daniel Rodriguez
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,14 +18,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,)
-#                        unicode_literals)
+from __future__ import absolute_import, division, print_function
 
 import backtrader as bt
 
+#                        unicode_literals)
+
+
 
 class PivotPoint1(bt.Indicator):
-    lines = ('p', 's1', 's2', 'r1', 'r2',)
+    lines = (
+        "p",
+        "s1",
+        "s2",
+        "r1",
+        "r2",
+    )
 
     def __init__(self):
         h = self.data.high(-1)  # previous high
@@ -44,7 +52,13 @@ class PivotPoint1(bt.Indicator):
 
 
 class PivotPoint(bt.Indicator):
-    lines = ('p', 's1', 's2', 'r1', 'r2',)
+    lines = (
+        "p",
+        "s1",
+        "s2",
+        "r1",
+        "r2",
+    )
     plotinfo = dict(subplot=False)
 
     def __init__(self):

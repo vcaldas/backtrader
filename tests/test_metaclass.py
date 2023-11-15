@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-# Copyright (C) 2015-2020 Daniel Rodriguez
+# Copyright (C) 2015-2023 Daniel Rodriguez
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,15 +20,18 @@
 ###############################################################################
 import testcommon
 
+
 class TestFrompackages(testcommon.SampleParamsHolder):
     """
     This class is used for testing that inheriting from base class that
     uses `frompackages` import mechanism, doesnt brake the functionality
     of the base class.
     """
+
     def __init__(self):
         super(TestFrompackages, self).__init__()
         # Prepare the lags array
+
 
 def test_run(main=False):
     """
@@ -38,5 +41,6 @@ def test_run(main=False):
     """
     test = TestFrompackages()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     test_run(main=True)

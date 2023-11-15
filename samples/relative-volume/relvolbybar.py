@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-# Copyright (C) 2015-2020 Daniel Rodriguez
+# Copyright (C) 2015-2023 Daniel Rodriguez
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,31 +18,29 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
 import datetime
 import math
 
-
 import backtrader as bt
 
 
 class RelativeVolumeByBar(bt.Indicator):
-    alias = ('RVBB',)
-    lines = ('rvbb',)
+    alias = ("RVBB",)
+    lines = ("rvbb",)
 
     params = (
-        ('prestart', datetime.time(8, 00)),
-        ('start', datetime.time(9, 10)),
-        ('end', datetime.time(17, 15)),
+        ("prestart", datetime.time(8, 00)),
+        ("start", datetime.time(9, 10)),
+        ("end", datetime.time(17, 15)),
     )
 
     def _plotlabel(self):
         plabels = []
         for name, value in self.params._getitems():
-            plabels.append('%s: %s' % (name, value.strftime('%H:%M')))
+            plabels.append("%s: %s" % (name, value.strftime("%H:%M")))
 
         return plabels
 
@@ -114,7 +112,7 @@ class RelativeVolumeByBar(bt.Indicator):
         tcomp = self.data._compression
 
         if tframe == bt.TimeFrame.Seconds:
-            minbuffer = (minperiod * 60)
+            minbuffer = minperiod * 60
 
         minbuffer = (minbuffer // tcomp) + tcomp
 

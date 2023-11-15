@@ -2,7 +2,7 @@
 # -*- coding: utf-8; py-indent-offset:4 -*-
 ###############################################################################
 #
-# Copyright (C) 2015-2020 Daniel Rodriguez
+# Copyright (C) 2015-2023 Daniel Rodriguez
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,17 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import backtrader as bt
 import backtrader.feeds as btfeeds
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cerebro = bt.Cerebro(stdstats=True)
     cerebro.addstrategy(bt.Strategy)
 
-    data = bt.feeds.BacktraderCSVData(dataname='../../datas/2006-day-001.txt')
+    data = bt.feeds.BacktraderCSVData(dataname="../../datas/2006-day-001.txt")
     cerebro.adddata(data)
 
     cerebro.run()
