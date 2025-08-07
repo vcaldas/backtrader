@@ -1,4 +1,4 @@
-PHONY: talib
+PHONY: talib pre-commit
 
 
 talib:
@@ -10,3 +10,10 @@ talib:
 	@export TA_INCLUDE_PATH=/usr/include
 	@rm -rf ta-lib-0.6.4 ta-lib-0.6.4-src.tar.gz
 	@echo "TA-Lib installed successfully."
+
+
+pre-commit:
+	@echo "Installing pre-commit and running hooks..."
+	pip install pre-commit
+	pre-commit install
+	pre-commit run --all-files
