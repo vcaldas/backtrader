@@ -672,7 +672,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
 
         The signature of the callback must support the following:
 
-          - callback(msg, \*args, \*\*kwargs)
+          - callback(msg, *args, **kwargs)
 
         The actual ``msg``, ``*args`` and ``**kwargs`` received are
         implementation defined (depend entirely on the *data/broker/store*) but
@@ -714,7 +714,7 @@ class Cerebro(with_metaclass(MetaParams, object)):
 
         The signature of the callback must support the following:
 
-          - callback(data, status, \*args, \*\*kwargs)
+          - callback(data, status, *args, **kwargs)
 
         The actual ``*args`` and ``**kwargs`` received are implementation
         defined (depend entirely on the *data/broker/store*) but in general one
@@ -1540,9 +1540,9 @@ class Cerebro(with_metaclass(MetaParams, object)):
             # record starting time and tell feeds to discount the elapsed time
             # from the qcheck value
             drets = []
-            qstart = datetime.datetime.utcnow()
+            qstart = datetime.datetime.now(datetime.UTC)
             for d in datas:
-                qlapse = datetime.datetime.utcnow() - qstart
+                qlapse = datetime.datetime.now(datetime.UTC) - qstart
                 d.do_qcheck(newqcheck, qlapse.total_seconds())
                 drets.append(d.next(ticks=False))
 

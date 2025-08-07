@@ -91,7 +91,7 @@ SELLEXEC = [
 ]
 
 
-class TestStrategy(bt.Strategy):
+class CurrentTestStrategy(bt.Strategy):
     params = (
         ("period", 15),
         ("printdata", True),
@@ -231,7 +231,7 @@ def test_run(main=False):
         datas = [testcommon.getdata(i) for i in range(chkdatas)]
         testcommon.runtest(
             datas,
-            TestStrategy,
+            CurrentTestStrategy,
             printdata=main,
             printops=main,
             stocklike=stlike,

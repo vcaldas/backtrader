@@ -34,7 +34,7 @@ import backtrader as bt
 import backtrader.indicators as btind
 
 
-class TestStrategy(bt.Strategy):
+class CurrentTestStrategy(bt.Strategy):
     params = (
         ("period", 15),
         ("maxtrades", None),
@@ -162,7 +162,7 @@ def test_run(main=False):
     for maxtrades in [None, 0, 1]:
         cerebros = testcommon.runtest(
             datas,
-            TestStrategy,
+            CurrentTestStrategy,
             printdata=main,
             stocklike=False,
             maxtrades=maxtrades,
