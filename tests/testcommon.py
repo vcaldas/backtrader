@@ -233,4 +233,4 @@ class SampleParamsHolder(ParamsBase):
     frompackages = (("math", ("factorial")),)
 
     def __init__(self):
-        self.range = factorial(10) #noqa: F821
+        self.range = factorial(10)  # noqa: F821
