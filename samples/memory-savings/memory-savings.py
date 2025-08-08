@@ -21,7 +21,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import argparse
-import sys
 
 import backtrader as bt
 import backtrader.feeds as btfeeds
@@ -105,8 +104,6 @@ class St(bt.Strategy):
             tind += len(line.array)
             tline = len(line.array)
 
-        thisind = tind
-
         tsub = 0
         for j, sind in enumerate(ind.getindicators()):
             tsub += self.rindicator(sind, j, deep + 1)
@@ -143,7 +140,7 @@ def parse_args():
     parser.add_argument(
         "--data",
         required=False,
-        default="../../datas/yhoo-1996-2015.txt",
+        default="./datas/yhoo-1996-2015.txt",
         help="Data to be read in",
     )
 

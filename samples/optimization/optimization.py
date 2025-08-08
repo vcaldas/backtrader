@@ -83,13 +83,13 @@ def runstrat():
     cerebro.adddata(data)
 
     # clock the start of the process
-    tstart = time.clock()
+    tstart = time.time()
 
     # Run over everything
     stratruns = cerebro.run()
 
     # clock the end of the process
-    tend = time.clock()
+    tend = time.time()
 
     print("==================================================")
     for stratrun in stratruns:
@@ -112,7 +112,7 @@ def parse_args():
     parser.add_argument(
         "--data",
         "-d",
-        default="../../datas/2006-day-001.txt",
+        default="./datas/2006-day-001.txt",
         help="data to add to the system",
     )
 

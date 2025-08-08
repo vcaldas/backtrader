@@ -17,3 +17,11 @@ pre-commit:
 	pip install pre-commit
 	pre-commit install
 	pre-commit run --all-files
+
+test:
+	@echo "Running tests..."
+	@git add .
+	@uv run samples/analyzer-annualreturn/analyzer-annualreturn.py
+	@uv run samples/memory-savings/memory-savings.py
+	@uv run samples/optimization/optimization.py
+	@pytest -v --maxfail=1
