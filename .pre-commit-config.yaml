@@ -4,30 +4,30 @@ repos:
     hooks:
       - id: black
         args: ["--diff", "--color"]
-        stages: [push]
+        stages: [pre-push]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
-        stages: [push]
+        stages: [pre-push]
       - id: end-of-file-fixer
-        stages: [push]
+        stages: [pre-push]
       - id: check-yaml
-        stages: [push]
+        stages: [pre-push]
   - repo: https://github.com/PyCQA/isort
     rev: 6.0.1
     hooks:
       - id: isort
         args: ["--profile", "black"]
         skip: ["*/__init__.py"]
-        stages: [push]
+        stages: [pre-push]
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.3
     hooks:
       - id: ruff
-        stages: [push]
+        stages: [pre-push]
       - id: ruff-format
-        stages: [push]
+        stages: [pre-push]
   # - repo: https://github.com/pre-commit/mirrors-mypy
   #   rev: v1.17.0
   #   hooks:
