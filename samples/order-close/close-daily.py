@@ -31,9 +31,6 @@ from backtrader.utils.py3 import with_metaclass
 #                        unicode_literals)
 
 
-
-
-
 class St(bt.Strategy):
     def __init__(self):
         self.order = None
@@ -185,7 +182,7 @@ def parse_args():
         required=False,
         action="store_true",
         help=(
-            "Consider a bar with the end of session time to" "be the end of the session"
+            "Consider a bar with the end of session time tobe the end of the session"
         ),
     )
 

@@ -271,7 +271,7 @@ def parse_args(pargs=None):
         action="store",
         type=float,
         default=0.0033,
-        help=("Perc (abs) commision in each operation. " "0.001 -> 0.1%%, 0.01 -> 1%%"),
+        help=("Perc (abs) commision in each operation. 0.001 -> 0.1%%, 0.01 -> 1%%"),
     )
 
     parser.add_argument(
@@ -343,7 +343,7 @@ def parse_args(pargs=None):
         action="store",
         type=float,
         default=0.01,
-        help=("Risk free rate in Perc (abs) of the asset for " "the Sharpe Ratio"),
+        help=("Risk free rate in Perc (abs) of the asset for the Sharpe Ratio"),
     )
     # Plot options
     parser.add_argument(

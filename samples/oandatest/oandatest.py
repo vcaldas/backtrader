@@ -403,7 +403,7 @@ def parse_args(pargs=None):
         type=float,
         required=False,
         action="store",
-        help=("Timeout for periodic " "notification/resampling/replaying check"),
+        help=("Timeout for periodic notification/resampling/replaying check"),
     )
 
     parser.add_argument(
@@ -472,8 +472,7 @@ def parse_args(pargs=None):
         required=False,
         action="store",
         help=(
-            "Starting date for historical download "
-            "with format: YYYY-MM-DD[THH:MM:SS]"
+            "Starting date for historical download with format: YYYY-MM-DD[THH:MM:SS]"
         ),
     )
 

@@ -18,8 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import itertools
 import sys
@@ -54,21 +53,27 @@ if PY2:
     bstr = bytes
 
     from io import StringIO
-
-    from urllib2 import urlopen, ProxyHandler, build_opener, install_opener
     from urllib import quote as urlquote
 
-    def iterkeys(d): return d.iterkeys()
+    from urllib2 import ProxyHandler, build_opener, install_opener, urlopen
 
-    def itervalues(d): return d.itervalues()
+    def iterkeys(d):
+        return d.iterkeys()
 
-    def iteritems(d): return d.iteritems()
+    def itervalues(d):
+        return d.itervalues()
 
-    def keys(d): return d.keys()
+    def iteritems(d):
+        return d.iteritems()
 
-    def values(d): return d.values()
+    def keys(d):
+        return d.keys()
 
-    def items(d): return d.items()
+    def values(d):
+        return d.values()
+
+    def items(d):
+        return d.items()
 
     import Queue as queue
 
@@ -84,8 +89,8 @@ else:
     MAXFLOAT = sys.float_info.max
     MINFLOAT = sys.float_info.min
 
-    string_types = str,
-    integer_types = int,
+    string_types = (str,)
+    integer_types = (int,)
 
     filter = filter
     map = map
@@ -93,29 +98,36 @@ else:
     zip = zip
     long = int
 
-    def cmp(a, b): return (a > b) - (a < b)
+    def cmp(a, b):
+        return (a > b) - (a < b)
 
-    def bytes(x): return x.encode('utf-8')
+    def bytes(x):
+        return x.encode("utf-8")
 
-    def bstr(x): return str(x)
+    def bstr(x):
+        return str(x)
 
     from io import StringIO
-
-    from urllib.request import (urlopen, ProxyHandler, build_opener,
-                                install_opener)
     from urllib.parse import quote as urlquote
+    from urllib.request import ProxyHandler, build_opener, install_opener, urlopen
 
-    def iterkeys(d): return iter(d.keys())
+    def iterkeys(d):
+        return iter(d.keys())
 
-    def itervalues(d): return iter(d.values())
+    def itervalues(d):
+        return iter(d.values())
 
-    def iteritems(d): return iter(d.items())
+    def iteritems(d):
+        return iter(d.items())
 
-    def keys(d): return list(d.keys())
+    def keys(d):
+        return list(d.keys())
 
-    def values(d): return list(d.values())
+    def values(d):
+        return list(d.values())
 
-    def items(d): return list(d.items())
+    def items(d):
+        return list(d.items())
 
     import queue as queue
 
@@ -123,11 +135,12 @@ else:
 # This is from Armin Ronacher from Flash simplified later by six
 def with_metaclass(meta, *bases):
     """Create a base class with a metaclass."""
+
     # This requires a bit of explanation: the basic idea is to make a dummy
     # metaclass for one level of class instantiation that replaces itself with
     # the actual metaclass.
     class metaclass(meta):
-
         def __new__(cls, name, this_bases, d):
             return meta(name, bases, d)
-    return type.__new__(metaclass, str('temporary_class'), (), {})
+
+    return type.__new__(metaclass, str("temporary_class"), (), {})

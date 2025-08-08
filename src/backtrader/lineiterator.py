@@ -18,27 +18,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
 import operator
 import sys
 
-from .utils.py3 import map, range, zip, with_metaclass, string_types
-from .utils import DotDict
-
-from .lineroot import LineRoot, LineSingle
-from .linebuffer import LineActions, LineNum
-from .lineseries import LineSeries, LineSeriesMaker
-from .dataseries import DataSeries
 from . import metabase
+from .dataseries import DataSeries
+from .linebuffer import LineActions, LineNum
+from .lineroot import LineRoot, LineSingle
+from .lineseries import LineSeries, LineSeriesMaker
+from .utils import DotDict
+from .utils.py3 import map, range, string_types, with_metaclass, zip
 
 
 class MetaLineIterator(LineSeries.__class__):
     def donew(cls, *args, **kwargs):
-        _obj, args, kwargs = \
-            super(MetaLineIterator, cls).donew(*args, **kwargs)
+        _obj, args, kwargs = super(MetaLineIterator, cls).donew(*args, **kwargs)
 
         # Prepare to hold children that need to be calculated and
         # influence minperiod - Moved here to support LineNum below
@@ -85,27 +82,29 @@ class MetaLineIterator(LineSeries.__class__):
             for l, line in enumerate(data.lines):
                 linealias = data._getlinealias(l)
                 if linealias:
-                    setattr(_obj, 'data_%s' % linealias, line)
-                setattr(_obj, 'data_%d' % l, line)
+                    setattr(_obj, "data_%s" % linealias, line)
+                setattr(_obj, "data_%d" % l, line)
 
             for d, data in enumerate(_obj.datas):
-                setattr(_obj, 'data%d' % d, data)
+                setattr(_obj, "data%d" % d, data)
 
                 for l, line in enumerate(data.lines):
                     linealias = data._getlinealias(l)
                     if linealias:
-                        setattr(_obj, 'data%d_%s' % (d, linealias), line)
-                    setattr(_obj, 'data%d_%d' % (d, l), line)
+                        setattr(_obj, "data%d_%s" % (d, linealias), line)
+                    setattr(_obj, "data%d_%d" % (d, l), line)
 
         # Parameter values have now been set before __init__
-        _obj.dnames = DotDict([(d._name, d)
-                               for d in _obj.datas if getattr(d, '_name', '')])
+        _obj.dnames = DotDict(
+            [(d._name, d) for d in _obj.datas if getattr(d, "_name", "")]
+        )
 
         return _obj, newargs, kwargs
 
     def dopreinit(cls, _obj, *args, **kwargs):
-        _obj, args, kwargs = \
-            super(MetaLineIterator, cls).dopreinit(_obj, *args, **kwargs)
+        _obj, args, kwargs = super(MetaLineIterator, cls).dopreinit(
+            _obj, *args, **kwargs
+        )
 
         # if no datas were found use, use the _owner (to have a clock)
         _obj.datas = _obj.datas or [_obj._owner]
@@ -117,8 +116,7 @@ class MetaLineIterator(LineSeries.__class__):
         # No calculation can take place until all datas have yielded "data"
         # A data could be an indicator and it could take x bars until
         # something is produced
-        _obj._minperiod = \
-            max([x._minperiod for x in _obj.datas] or [_obj._minperiod])
+        _obj._minperiod = max([x._minperiod for x in _obj.datas] or [_obj._minperiod])
 
         # The lines carry at least the same minperiod as
         # that provided by the datas
@@ -128,8 +126,9 @@ class MetaLineIterator(LineSeries.__class__):
         return _obj, args, kwargs
 
     def dopostinit(cls, _obj, *args, **kwargs):
-        _obj, args, kwargs = \
-            super(MetaLineIterator, cls).dopostinit(_obj, *args, **kwargs)
+        _obj, args, kwargs = super(MetaLineIterator, cls).dopostinit(
+            _obj, *args, **kwargs
+        )
 
         # my minperiod is as large as the minperiod of my lines
         _obj._minperiod = max([x._minperiod for x in _obj.lines])
@@ -151,20 +150,22 @@ class LineIterator(with_metaclass(MetaLineIterator, LineSeries)):
     _mindatas = 1
     _ltype = LineSeries.IndType
 
-    plotinfo = dict(plot=True,
-                    subplot=True,
-                    plotname='',
-                    plotskip=False,
-                    plotabove=False,
-                    plotlinelabels=False,
-                    plotlinevalues=True,
-                    plotvaluetags=True,
-                    plotymargin=0.0,
-                    plotyhlines=[],
-                    plotyticks=[],
-                    plothlines=[],
-                    plotforce=False,
-                    plotmaster=None,)
+    plotinfo = dict(
+        plot=True,
+        subplot=True,
+        plotname="",
+        plotskip=False,
+        plotabove=False,
+        plotlinelabels=False,
+        plotlinevalues=True,
+        plotvaluetags=True,
+        plotymargin=0.0,
+        plotyhlines=[],
+        plotyticks=[],
+        plothlines=[],
+        plotforce=False,
+        plotmaster=None,
+    )
 
     def _periodrecalc(self):
         # last check in case not all lineiterators were assigned to
@@ -199,8 +200,11 @@ class LineIterator(with_metaclass(MetaLineIterator, LineSeries)):
         return self._lineiterators[LineIterator.IndType]
 
     def getindicators_lines(self):
-        return [x for x in self._lineiterators[LineIterator.IndType]
-                if hasattr(x.lines, 'getlinealiases')]
+        return [
+            x
+            for x in self._lineiterators[LineIterator.IndType]
+            if hasattr(x.lines, "getlinealiases")
+        ]
 
     def getobservers(self):
         return self._lineiterators[LineIterator.ObsType]
@@ -210,7 +214,7 @@ class LineIterator(with_metaclass(MetaLineIterator, LineSeries)):
         self._lineiterators[indicator._ltype].append(indicator)
 
         # use getattr because line buffers don't have this attribute
-        if getattr(indicator, '_nextforce', False):
+        if getattr(indicator, "_nextforce", False):
             # the indicator needs runonce=False
             o = self
             while o is not None:
@@ -330,27 +334,27 @@ class LineIterator(with_metaclass(MetaLineIterator, LineSeries)):
         pass
 
     def prenext(self):
-        '''
+        """
         This method will be called before the minimum period of all
         datas/indicators have been meet for the strategy to start executing
-        '''
+        """
         pass
 
     def nextstart(self):
-        '''
+        """
         This method will be called once, exactly when the minimum period for
         all datas/indicators have been meet. The default behavior is to call
         next
-        '''
+        """
 
         # Called once for 1st full calculation - defaults to regular next
         self.next()
 
     def next(self):
-        '''
+        """
         This method will be called for all remaining data points when the
         minimum period for all datas/indicators have been meet.
-        '''
+        """
         pass
 
     def _addnotification(self, *args, **kwargs):
@@ -380,6 +384,7 @@ class LineIterator(with_metaclass(MetaLineIterator, LineSeries)):
 # or even outside (like in LineObservers)
 # for the 3 subbranches without generating circular import references
 
+
 class DataAccessor(LineIterator):
     PriceClose = DataSeries.Close
     PriceLow = DataSeries.Low
@@ -405,6 +410,7 @@ class StrategyBase(DataAccessor):
 # Utility class to couple lines/lineiterators which may have different lengths
 # Will only work when runonce=False is passed to Cerebro
 
+
 class SingleCoupler(LineActions):
     def __init__(self, cdata, clock=None):
         super(SingleCoupler, self).__init__()
@@ -412,7 +418,7 @@ class SingleCoupler(LineActions):
 
         self.cdata = cdata
         self.dlen = 0
-        self.val = float('NaN')
+        self.val = float("NaN")
 
     def next(self):
         if len(self.cdata) > self.dlen:
@@ -429,7 +435,7 @@ class MultiCoupler(LineIterator):
         super(MultiCoupler, self).__init__()
         self.dlen = 0
         self.dsize = self.fullsize()  # shorcut for number of lines
-        self.dvals = [float('NaN')] * self.dsize
+        self.dvals = [float("NaN")] * self.dsize
 
     def next(self):
         if len(self.data) > self.dlen:
@@ -453,7 +459,7 @@ def LinesCoupler(cdata, clock=None, **kwargs):
         LinesCoupler.counter = 0
 
     # Prepare a MultiCoupler subclass
-    nclsname = str('LinesCoupler_%d' % LinesCoupler.counter)
+    nclsname = str("LinesCoupler_%d" % LinesCoupler.counter)
     ncls = type(nclsname, (MultiCoupler,), {})
     thismod = sys.modules[LinesCoupler.__module__]
     setattr(thismod, ncls.__name__, ncls)
@@ -467,13 +473,13 @@ def LinesCoupler(cdata, clock=None, **kwargs):
     # The clock is set here to avoid it being interpreted as a data by the
     # LineIterator background scanning code
     if clock is None:
-        clock = getattr(cdata, '_clock', None)
+        clock = getattr(cdata, "_clock", None)
         if clock is not None:
-            nclock = getattr(clock, '_clock', None)
+            nclock = getattr(clock, "_clock", None)
             if nclock is not None:
                 clock = nclock
             else:
-                nclock = getattr(clock, 'data', None)
+                nclock = getattr(clock, "data", None)
                 if nclock is not None:
                     clock = nclock
 

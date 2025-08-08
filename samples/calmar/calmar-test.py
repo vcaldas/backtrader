@@ -33,9 +33,7 @@ class St(bt.SignalStrategy):
         (
             ma1,
             ma2,
-        ) = bt.ind.SMA(
-            period=15
-        ), bt.ind.SMA(period=50)
+        ) = bt.ind.SMA(period=15), bt.ind.SMA(period=50)
         self.signal_add(bt.signal.SIGNAL_LONG, bt.ind.CrossOver(ma1, ma2))
 
     def next2(self):

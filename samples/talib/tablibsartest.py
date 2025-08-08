@@ -91,7 +91,7 @@ def parse_args(pargs=None):
         "--use-next",
         required=False,
         action="store_true",
-        help=("Use next (step by step) " "instead of once (batch)"),
+        help=("Use next (step by step) instead of once (batch)"),
     )
 
     # Plot options

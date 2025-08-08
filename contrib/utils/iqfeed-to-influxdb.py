@@ -226,8 +226,7 @@ if __name__ == "__main__":
         default=None,
         type=str,
         help=(
-            "Starting date for historical download "
-            "with format: YYYY[-MM-DDTHH:MM:SS]."
+            "Starting date for historical download with format: YYYY[-MM-DDTHH:MM:SS]."
         ),
     )
     parser.add_argument(
@@ -237,7 +236,7 @@ if __name__ == "__main__":
         default=None,
         type=str,
         help=(
-            "Ending date for historical download " "with format: YYYY[-MM-DDTHH:MM:SS]."
+            "Ending date for historical download with format: YYYY[-MM-DDTHH:MM:SS]."
         ),
     )
     parser.add_argument(

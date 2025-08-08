@@ -18,15 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from copy import copy
 
 
 class Position(object):
-    '''
+    """
     Keeps and updates the size and price of a position. The object has no
     relationship to any asset. It only keeps size and price.
 
@@ -36,19 +34,19 @@ class Position(object):
 
     The Position instances can be tested using len(position) to see if size
     is not null
-    '''
+    """
 
     def __str__(self):
         items = list()
-        items.append('--- Position Begin')
-        items.append('- Size: {}'.format(self.size))
-        items.append('- Price: {}'.format(self.price))
-        items.append('- Price orig: {}'.format(self.price_orig))
-        items.append('- Closed: {}'.format(self.upclosed))
-        items.append('- Opened: {}'.format(self.upopened))
-        items.append('- Adjbase: {}'.format(self.adjbase))
-        items.append('--- Position End')
-        return '\n'.join(items)
+        items.append("--- Position Begin")
+        items.append("- Size: {}".format(self.size))
+        items.append("- Price: {}".format(self.price))
+        items.append("- Price orig: {}".format(self.price_orig))
+        items.append("- Closed: {}".format(self.upclosed))
+        items.append("- Opened: {}".format(self.upopened))
+        items.append("- Adjbase: {}".format(self.adjbase))
+        items.append("--- Position End")
+        return "\n".join(items)
 
     def __init__(self, size=0, price=0.0):
         self.size = size
@@ -122,7 +120,7 @@ class Position(object):
         return Position(self.size, self.price).update(size, price)
 
     def update(self, size, price, dt=None):
-        '''
+        """
         Updates the current position and returns the updated size, price and
         units used to open/close a position
 
@@ -157,7 +155,7 @@ class Position(object):
 
             Both opened and closed carry the same sign as the "size" argument
             because they refer to a part of the "size" argument
-        '''
+        """
         self.datetime = dt  # record datetime update (datetime.datetime)
 
         self.price_orig = self.price
@@ -173,7 +171,6 @@ class Position(object):
             opened, closed = size, 0
             self.price = price
         elif oldsize > 0:  # existing "long" position updated
-
             if size > 0:  # increased position
                 opened, closed = size, 0
                 self.price = (self.price * oldsize + size * price) / self.size
@@ -187,7 +184,6 @@ class Position(object):
                 self.price = price
 
         else:  # oldsize < 0 - existing short position updated
-
             if size < 0:  # increased position
                 opened, closed = size, 0
                 self.price = (self.price * oldsize + size * price) / self.size

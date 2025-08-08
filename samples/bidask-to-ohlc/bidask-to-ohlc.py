@@ -29,8 +29,6 @@ import backtrader.feeds as btfeeds
 #                        unicode_literals)
 
 
-
-
 class St(bt.Strategy):
     def next(self):
         print(

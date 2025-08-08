@@ -25,7 +25,6 @@ import backtrader as bt
 #                        unicode_literals)
 
 
-
 class PivotPoint1(bt.Indicator):
     lines = (
         "p",

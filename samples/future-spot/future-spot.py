@@ -35,8 +35,8 @@ def close_changer(data, *args, **kwargs):
 # override the standard markers
 class BuySellArrows(bt.observers.BuySell):
     plotlines = dict(
-        buy=dict(marker="$\u21E7$", markersize=12.0),
-        sell=dict(marker="$\u21E9$", markersize=12.0),
+        buy=dict(marker="$\u21e7$", markersize=12.0),
+        sell=dict(marker="$\u21e9$", markersize=12.0),
     )
 
 

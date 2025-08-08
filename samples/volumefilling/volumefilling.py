@@ -164,7 +164,7 @@ def parse_args():
         required=False,
         action="store",
         default=None,
-        help=("kwargs for the filler with format:\n" "\n" "arg1=val1,arg2=val2..."),
+        help=("kwargs for the filler with format:\n\narg1=val1,arg2=val2..."),
     )
 
     parser.add_argument(
@@ -182,7 +182,7 @@ def parse_args():
         action="store",
         type=int,
         default=10,
-        help=("Bars to wait for new op after completing " "another"),
+        help=("Bars to wait for new op after completing another"),
     )
 
     parser.add_argument(

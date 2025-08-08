@@ -18,34 +18,34 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import backtrader as bt
+
 from . import PeriodN
 
-
-__all__ = ['OLS_Slope_InterceptN', 'OLS_TransformationN', 'OLS_BetaN',
-           'CointN']
+__all__ = ["OLS_Slope_InterceptN", "OLS_TransformationN", "OLS_BetaN", "CointN"]
 
 
 class OLS_Slope_InterceptN(PeriodN):
-    '''
+    """
     Calculates a linear regression using ``statsmodel.OLS`` (Ordinary least
     squares) of data1 on data0
 
     Uses ``pandas`` and ``statsmodels``
-    '''
+    """
+
     _mindatas = 2  # ensure at least 2 data feeds are passed
 
     packages = (
-        ('pandas', 'pd'),
-        ('statsmodels.api', 'sm'),
+        ("pandas", "pd"),
+        ("statsmodels.api", "sm"),
     )
-    lines = ('slope', 'intercept',)
-    params = (
-        ('period', 10),
+    lines = (
+        "slope",
+        "intercept",
     )
+    params = (("period", 10),)
 
     def next(self):
         p0 = pd.Series(self.data0.get(size=self.p.period))
@@ -58,14 +58,20 @@ class OLS_Slope_InterceptN(PeriodN):
 
 
 class OLS_TransformationN(PeriodN):
-    '''
+    """
     Calculates the ``zscore`` for data0 and data1. Although it doesn't directly
     uses any external package it relies on ``OLS_SlopeInterceptN`` which uses
     ``pandas`` and ``statsmodels``
-    '''
+    """
+
     _mindatas = 2  # ensure at least 2 data feeds are passed
-    lines = ('spread', 'spread_mean', 'spread_std', 'zscore',)
-    params = (('period', 10),)
+    lines = (
+        "spread",
+        "spread_mean",
+        "spread_std",
+        "zscore",
+    )
+    params = (("period", 10),)
 
     def __init__(self):
         slint = OLS_Slope_InterceptN(*self.datas)
@@ -79,46 +85,49 @@ class OLS_TransformationN(PeriodN):
 
 
 class OLS_BetaN(PeriodN):
-    '''
+    """
     Calculates a regression of data1 on data0 using ``pandas.ols``
 
     Uses ``pandas``
-    '''
+    """
+
     _mindatas = 2  # ensure at least 2 data feeds are passed
 
-    packages = (
-        ('pandas', 'pd'),
-    )
+    packages = (("pandas", "pd"),)
 
-    lines = ('beta',)
-    params = (('period', 10),)
+    lines = ("beta",)
+    params = (("period", 10),)
 
     def next(self):
         y, x = (pd.Series(d.get(size=self.p.period)) for d in self.datas)
-        r_beta = pd.ols(y=y, x=x, window_type='full_sample')
-        self.lines.beta[0] = r_beta.beta['x']
+        r_beta = pd.ols(y=y, x=x, window_type="full_sample")
+        self.lines.beta[0] = r_beta.beta["x"]
 
 
 class CointN(PeriodN):
-    '''
+    """
     Calculates the score (coint_t) and pvalue for a given ``period`` for the
     data feeds
 
     Uses ``pandas`` and ``statsmodels`` (for ``coint``)
-    '''
+    """
+
     _mindatas = 2  # ensure at least 2 data feeds are passed
 
     packages = (
-        ('pandas', 'pd'),  # import pandas as pd
+        ("pandas", "pd"),  # import pandas as pd
     )
     frompackages = (
-        ('statsmodels.tsa.stattools', 'coint'),  # from st... import coint
+        ("statsmodels.tsa.stattools", "coint"),  # from st... import coint
     )
 
-    lines = ('score', 'pvalue',)
+    lines = (
+        "score",
+        "pvalue",
+    )
     params = (
-        ('period', 10),
-        ('trend', 'c'),  # see statsmodel.tsa.statttools
+        ("period", 10),
+        ("trend", "c"),  # see statsmodel.tsa.statttools
     )
 
     def next(self):

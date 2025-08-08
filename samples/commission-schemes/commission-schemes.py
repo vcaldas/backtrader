@@ -189,21 +189,21 @@ def parse_args():
         required=False,
         default="none",
         choices=["none", "perc", "fixed"],
-        help=("Commission - choose none for the old" " CommissionInfo behavior"),
+        help=("Commission - choose none for the old CommissionInfo behavior"),
     )
 
     parser.add_argument(
         "--stocklike",
         required=False,
         action="store_true",
-        help=("If the operation is for stock-like assets or" "future-like assets"),
+        help=("If the operation is for stock-like assets orfuture-like assets"),
     )
 
     parser.add_argument(
         "--percrel",
         required=False,
         action="store_true",
-        help=("If perc is expressed in relative xx% rather" "than absolute value 0.xx"),
+        help=("If perc is expressed in relative xx% ratherthan absolute value 0.xx"),
     )
 
     parser.add_argument("--plot", "-p", action="store_true", help="Plot the read data")

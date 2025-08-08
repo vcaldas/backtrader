@@ -30,8 +30,6 @@ import backtrader as bt
 #  - http://dark-bid.com/BTFD-only-strategy-that-matters.html
 
 
-
-
 class ValueUnlever(bt.observers.Value):
     """Extension of regular Value observer to add leveraged view"""
 

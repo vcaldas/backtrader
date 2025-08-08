@@ -18,19 +18,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-
-from .utils.py3 import range, with_metaclass
-
-from .lineiterator import LineIterator, IndicatorBase
-from .lineseries import LineSeriesMaker, Lines
+from .lineiterator import IndicatorBase, LineIterator
+from .lineseries import Lines, LineSeriesMaker
 from .metabase import AutoInfoClass
+from .utils.py3 import range, with_metaclass
 
 
 class MetaIndicator(IndicatorBase.__class__):
-    _refname = '_indcol'
+    _refname = "_indcol"
     _indcol = dict()
 
     _icache = dict()
@@ -65,14 +62,13 @@ class MetaIndicator(IndicatorBase.__class__):
         return cls._icache.setdefault(ckey, _obj)
 
     def __init__(cls, name, bases, dct):
-        '''
+        """
         Class has already been created ... register subclasses
-        '''
+        """
         # Initialize the class
         super(MetaIndicator, cls).__init__(name, bases, dct)
 
-        if not cls.aliased and \
-           name != 'Indicator' and not name.startswith('_'):
+        if not cls.aliased and name != "Indicator" and not name.startswith("_"):
             refattr = getattr(cls, cls._refname)
             refattr[name] = cls
 
@@ -138,10 +134,10 @@ class Indicator(with_metaclass(MetaIndicator, IndicatorBase)):
 
 class MtLinePlotterIndicator(Indicator.__class__):
     def donew(cls, *args, **kwargs):
-        lname = kwargs.pop('name')
+        lname = kwargs.pop("name")
         name = cls.__name__
 
-        lines = getattr(cls, 'lines', Lines)
+        lines = getattr(cls, "lines", Lines)
         cls.lines = lines._derive(name, (lname,), 0, [])
 
         plotlines = AutoInfoClass
@@ -150,8 +146,7 @@ class MtLinePlotterIndicator(Indicator.__class__):
         cls.plotlines = plotlines._derive(name, newplotlines, [], recurse=True)
 
         # Create the object and set the params in place
-        _obj, args, kwargs =  \
-            super(MtLinePlotterIndicator, cls).donew(*args, **kwargs)
+        _obj, args, kwargs = super(MtLinePlotterIndicator, cls).donew(*args, **kwargs)
 
         _obj.owner = _obj.data.owner._clock
         _obj.data.lines[0].addbinding(_obj.lines[0])

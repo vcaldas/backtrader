@@ -31,9 +31,6 @@ import backtrader as bt
 # https://estrategiastrading.com/oro-bolsa-estadistica-con-python/
 
 
-
-
-
 class PearsonR(bt.ind.PeriodN):
     _mindatas = 2  # hint to the platform
 

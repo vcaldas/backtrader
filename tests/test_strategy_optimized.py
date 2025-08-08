@@ -155,7 +155,7 @@ class CurrentTestStrategy(bt.Strategy):
         tused = time_clock() - self.tstart
         if self.p.printdata:
             self.log(
-                ("Time used: %s  - Period % d - " "Start value: %.2f - End value: %.2f")
+                ("Time used: %s  - Period % d - Start value: %.2f - End value: %.2f")
                 % (
                     str(tused),
                     self.p.period,

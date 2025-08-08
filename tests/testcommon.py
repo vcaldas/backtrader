@@ -63,7 +63,7 @@ def runtest(
     maxcpus=1,
     writer=None,
     analyzer=None,
-    **kwargs
+    **kwargs,
 ):
     runonces = [True, False] if runonce is None else [runonce]
     preloads = [True, False] if preload is None else [preload]
@@ -233,4 +233,4 @@ class SampleParamsHolder(ParamsBase):
     frompackages = (("math", ("factorial")),)
 
     def __init__(self):
-        self.range = factorial(10)
+        self.range = factorial(10) #noqa: F821

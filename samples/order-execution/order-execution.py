@@ -155,10 +155,7 @@ class OrderExecutionStrategy(bt.Strategy):
                     )
                     self.log(txt % (price, valid.strftime("%Y-%m-%d"), plimit))
                 else:
-                    txt = (
-                        "BUY CREATE, exectype StopLimit, price %.2f,"
-                        " pricelimit: %.2f"
-                    )
+                    txt = "BUY CREATE, exectype StopLimit, price %.2f, pricelimit: %.2f"
                     self.log(txt % (price, plimit))
 
 
@@ -278,7 +275,7 @@ def parse_args():
         "-e",
         required=False,
         default="Market",
-        help=("Execution Type: Market (default), Close, Limit," " Stop, StopLimit"),
+        help=("Execution Type: Market (default), Close, Limit, Stop, StopLimit"),
     )
 
     parser.add_argument(

@@ -18,29 +18,38 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ###############################################################################
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import absolute_import, division, print_function, unicode_literals
 
-'''
+"""
 Redefine/Override matplotlib locators to make them work with index base x axis
 which can be converted from/to dates
-'''
+"""
 
 import datetime
 import warnings
 
-from matplotlib.dates import AutoDateLocator as ADLocator
-from matplotlib.dates import RRuleLocator as RRLocator
-from matplotlib.dates import AutoDateFormatter as ADFormatter
-
-from matplotlib.dates import (HOURS_PER_DAY, MIN_PER_HOUR, SEC_PER_MIN,
-                              MONTHS_PER_YEAR, DAYS_PER_WEEK,
-                              SEC_PER_HOUR, SEC_PER_DAY,
-                              num2date, rrulewrapper, YearLocator,
-                              MicrosecondLocator)
-
-from dateutil.relativedelta import relativedelta
 import numpy as np
+from dateutil.relativedelta import relativedelta
+from matplotlib.dates import (
+    DAYS_PER_WEEK,
+    HOURS_PER_DAY,
+    MIN_PER_HOUR,
+    MONTHS_PER_YEAR,
+    SEC_PER_DAY,
+    SEC_PER_HOUR,
+    SEC_PER_MIN,
+)
+from matplotlib.dates import AutoDateFormatter as ADFormatter
+from matplotlib.dates import AutoDateLocator as ADLocator
+from matplotlib.dates import (
+    MicrosecondLocator,
+)
+from matplotlib.dates import RRuleLocator as RRLocator
+from matplotlib.dates import (
+    YearLocator,
+    num2date,
+    rrulewrapper,
+)
 
 
 def _idx2dt(idx, dates, tz):
@@ -59,7 +68,6 @@ def _idx2dt(idx, dates, tz):
 
 
 class RRuleLocator(RRLocator):
-
     def __init__(self, dates, o, tz=None):
         self._dates = dates
         super(RRuleLocator, self).__init__(o, tz)
@@ -72,8 +80,10 @@ class RRuleLocator(RRLocator):
         if dmin > dmax:
             dmin, dmax = dmax, dmin
 
-        return (_idx2dt(dmin, self._dates, self.tz),
-                _idx2dt(dmax, self._dates, self.tz))
+        return (
+            _idx2dt(dmin, self._dates, self.tz),
+            _idx2dt(dmax, self._dates, self.tz),
+        )
 
     def viewlim_to_dt(self):
         """
@@ -83,17 +93,19 @@ class RRuleLocator(RRLocator):
         if vmin > vmax:
             vmin, vmax = vmax, vmin
 
-        return (_idx2dt(vmin, self._dates, self.tz),
-                _idx2dt(vmax, self._dates, self.tz))
+        return (
+            _idx2dt(vmin, self._dates, self.tz),
+            _idx2dt(vmax, self._dates, self.tz),
+        )
 
     def tick_values(self, vmin, vmax):
         import bisect
+
         dtnums = super(RRuleLocator, self).tick_values(vmin, vmax)
         return [bisect.bisect_left(self._dates, x) for x in dtnums]
 
 
 class AutoDateLocator(ADLocator):
-
     def __init__(self, dates, *args, **kwargs):
         self._dates = dates
         super(AutoDateLocator, self).__init__(*args, **kwargs)
@@ -106,8 +118,10 @@ class AutoDateLocator(ADLocator):
         if dmin > dmax:
             dmin, dmax = dmax, dmin
 
-        return (_idx2dt(dmin, self._dates, self.tz),
-                _idx2dt(dmax, self._dates, self.tz))
+        return (
+            _idx2dt(dmin, self._dates, self.tz),
+            _idx2dt(dmax, self._dates, self.tz),
+        )
 
     def viewlim_to_dt(self):
         """
@@ -117,16 +131,19 @@ class AutoDateLocator(ADLocator):
         if vmin > vmax:
             vmin, vmax = vmax, vmin
 
-        return (_idx2dt(vmin, self._dates, self.tz),
-                _idx2dt(vmax, self._dates, self.tz))
+        return (
+            _idx2dt(vmin, self._dates, self.tz),
+            _idx2dt(vmax, self._dates, self.tz),
+        )
 
     def tick_values(self, vmin, vmax):
         import bisect
+
         dtnums = super(AutoDateLocator, self).tick_values(vmin, vmax)
         return [bisect.bisect_left(self._dates, x) for x in dtnums]
 
     def get_locator(self, dmin, dmax):
-        'Pick the best locator based on a distance.'
+        "Pick the best locator based on a distance."
         delta = relativedelta(dmax, dmin)
         tdelta = dmax - dmin
 
@@ -141,14 +158,21 @@ class AutoDateLocator(ADLocator):
         # whenever possible.
         numYears = float(delta.years)
         numMonths = (numYears * MONTHS_PER_YEAR) + delta.months
-        numDays = tdelta.days   # Avoids estimates of days/month, days/year
+        numDays = tdelta.days  # Avoids estimates of days/month, days/year
         numHours = (numDays * HOURS_PER_DAY) + delta.hours
         numMinutes = (numHours * MIN_PER_HOUR) + delta.minutes
         numSeconds = np.floor(tdelta.total_seconds())
         numMicroseconds = np.floor(tdelta.total_seconds() * 1e6)
 
-        nums = [numYears, numMonths, numDays, numHours, numMinutes,
-                numSeconds, numMicroseconds]
+        nums = [
+            numYears,
+            numMonths,
+            numDays,
+            numHours,
+            numMinutes,
+            numSeconds,
+            numMicroseconds,
+        ]
 
         use_rrule_locator = [True] * 6 + [False]
 
@@ -181,11 +205,13 @@ class AutoDateLocator(ADLocator):
             else:
                 # We went through the whole loop without breaking, default to
                 # the last interval in the list and raise a warning
-                warnings.warn('AutoDateLocator was unable to pick an '
-                              'appropriate interval for this date range. '
-                              'It may be necessary to add an interval value '
-                              "to the AutoDateLocator's intervald dictionary."
-                              ' Defaulting to {0}.'.format(interval))
+                warnings.warn(
+                    "AutoDateLocator was unable to pick an "
+                    "appropriate interval for this date range. "
+                    "It may be necessary to add an interval value "
+                    "to the AutoDateLocator's intervald dictionary."
+                    " Defaulting to {0}.".format(interval)
+                )
 
             # Set some parameters as appropriate
             self._freq = freq
@@ -201,19 +227,25 @@ class AutoDateLocator(ADLocator):
         else:
             if False:
                 raise ValueError(
-                    'No sensible date limit could be found in the '
-                    'AutoDateLocator.')
+                    "No sensible date limit could be found in the AutoDateLocator."
+                )
             else:
                 usemicro = True
 
         if not usemicro and use_rrule_locator[i]:
             _, bymonth, bymonthday, byhour, byminute, bysecond, _ = byranges
 
-            rrule = rrulewrapper(self._freq, interval=interval,
-                                 dtstart=dmin, until=dmax,
-                                 bymonth=bymonth, bymonthday=bymonthday,
-                                 byhour=byhour, byminute=byminute,
-                                 bysecond=bysecond)
+            rrule = rrulewrapper(
+                self._freq,
+                interval=interval,
+                dtstart=dmin,
+                until=dmax,
+                bymonth=bymonth,
+                bymonthday=bymonthday,
+                byhour=byhour,
+                byminute=byminute,
+                bysecond=bysecond,
+            )
 
             locator = RRuleLocator(self._dates, rrule, self.tz)
         else:
@@ -240,12 +272,12 @@ class AutoDateLocator(ADLocator):
 
 
 class AutoDateFormatter(ADFormatter):
-    def __init__(self, dates, locator, tz=None, defaultfmt='%Y-%m-%d'):
+    def __init__(self, dates, locator, tz=None, defaultfmt="%Y-%m-%d"):
         self._dates = dates
         super(AutoDateFormatter, self).__init__(locator, tz, defaultfmt)
 
     def __call__(self, x, pos=None):
-        '''Return the label for time x at position pos'''
+        """Return the label for time x at position pos"""
         x = int(round(x))
         ldates = len(self._dates)
         if x >= ldates:
